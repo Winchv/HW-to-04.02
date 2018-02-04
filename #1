@@ -1,0 +1,79 @@
+
+#include <iostream>
+#include <cmath>
+using namespace std;
+class Complex {
+private:
+  double q,w;
+public:
+  Complex ()
+  {   };
+  Complex (double r) {
+    q = r;
+    w = 0;
+  }
+  Complex (double r, double i)
+  {
+    q = r;
+    w = i;
+  }
+  Complex (const Complex &c) {
+    q = c.q;
+    w = c.w;
+  }
+  ~Complex ()
+  {  }
+  double abs () {
+    return sqrt (q * q + w * w);
+  }
+  Complex& operator = (Complex &c) {
+    q = c.q;
+    w = c.w;
+    return (*this);
+  }
+  Complex& operator += (Complex &c) {
+    q += c.q;
+    w += c.w;
+    return *this;
+  }
+  Complex operator + (const Complex &c) {
+    return Complex (q + c.q, w + c.w);
+  }
+  Complex operator - (const Complex &c) {
+    return Complex(q - c.q, w - c.w);
+  }
+  Complex operator * (const Complex &c) {
+    return Complex(q * c.q - w * c.w, q * c.w + w * c.q);
+  }
+  Complex operator / (const Complex &c) {
+    Complex temp;
+    double r = c.q * c.q + c.w * c.w;
+    temp.q = (q * c.q + w * c.w) / r;
+    temp.w = (w * c.q - q * c.w) / r;
+    return temp;
+  }
+  friend ostream & operator<< (ostream &, const Complex &);   
+  friend istream & operator>> (istream &, Complex &);         
+};
+ostream& operator<< (ostream &out, const Complex &c) {
+  out << "(" << c.q << ", " << c.w << ")";
+  return out;
+}
+istream& operator>> (istream &in, Complex &c) {
+  in >> c.q >> c.w;
+  return in;
+}
+int
+main ()
+{
+  Complex a (124, 65);
+  Complex b (70, -74);
+  cout << "a = " << a << "; b =" << b << endl;
+  a += b;
+  cout << "a = " << a << "; b =" << b << endl;
+  Complex c = a + b;
+  cout << c << endl;
+  cout << a + b << endl;
+  cout << a * b << endl;
+  return 0;
+}
